@@ -4,6 +4,12 @@ import requests as rq
 import snowflake.connector
 from urllib.error import URLError
 
+def get_fruityvice_data(this_fruit_choice):
+    fruityvice_response = rq.get("https://fruityvice.com/api/fruit/" + fruit_choice)
+    # Normalize the json response
+    fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
+    return fruityvice_normalized
+
 streamlit.title('My Mom\'s New Healthy Diner')
 streamlit.header('Breakfast Favorites')
 streamlit.text('🥣 Omega 3 & Blueberry Oeatmeal')
@@ -22,14 +28,13 @@ fruits_to_show = my_fruit_list.loc[fruits_selected]
 streamlit.dataframe(fruits_to_show)
 
 streamlit.header('FruityVice Fruit Advise!')
+
 try:
     fruit_choice = streamlit.text_input('What fruit would you like information about?')
     if not fruit_choice:
         streamlit.error('Please select a fruit to get information.')
     else:
-        fruityvice_response = rq.get("https://fruityvice.com/api/fruit/" + fruit_choice)
-        # Normalize the json response
-        fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
+        fruityvice_normalized = get_fruityvice_data(fruit_choice)
         # Show the normalized json response in a dataframe
         streamlit.dataframe(fruityvice_normalized)
 except URLError as e:
