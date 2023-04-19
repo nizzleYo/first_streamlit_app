@@ -21,4 +21,8 @@ streamlit.dataframe(fruits_to_show)
 
 streamlit.header('FruityVice Fruit Advise!')
 fruityvice_response = rq.get("https://fruityvice.com/api/fruit/watermelon")
-streamlit.text(fruityvice_response.json())
+
+# Normalize the json response
+fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
+# Show the normalized json response in a dataframe
+streamlit.dataframe(fruityvice_normalized)
