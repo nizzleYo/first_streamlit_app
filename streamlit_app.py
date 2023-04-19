@@ -20,7 +20,7 @@ fruits_to_show = my_fruit_list.loc[fruits_selected]
 streamlit.dataframe(fruits_to_show)
 
 streamlit.header('FruityVice Fruit Advise!')
-fruityvice_response = rq.get("https://fruityvice.com/api/fruit/watermelon")
+fruityvice_response = rq.get("https://fruityvice.com/api/fruit/" + "kiwi")
 
 # Normalize the json response
 fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
